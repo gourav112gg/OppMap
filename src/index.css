@@ -1,0 +1,141 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Playfair+Display:ital,wght@1,500;1,600&display=swap');
+@import "tailwindcss";
+
+:root {
+  --color-bg: #E4E3E0;
+  --color-text: #141414;
+  --color-text-muted: rgba(20, 20, 20, 0.65);
+  --color-border: #141414;
+  --color-surface: #E4E3E0;
+  --color-surface-2: #DCDAD7;
+  
+  --color-amber: #B45309; /* Deep technical rust/amber */
+  --color-teal: #0D9488;  /* Technical teal */
+  --color-blue: #2563EB;  /* Deep blue */
+  --color-red: #DC2626;   /* Rich red */
+}
+
+.dark {
+  --color-bg: #141414;
+  --color-text: #E4E3E0;
+  --color-text-muted: rgba(228, 227, 224, 0.65);
+  --color-border: #333330;
+  --color-surface: #141414;
+  --color-surface-2: #1E1D1B;
+  
+  --color-amber: #F59E0B; /* Bright amber */
+  --color-teal: #14B8A6;  /* Bright teal */
+  --color-blue: #3B82F6;  /* Bright blue */
+  --color-red: #EF4444;   /* Bright red */
+}
+
+@theme {
+  --font-sans: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-display: "Playfair Display", "Georgia", serif;
+  --font-mono: "JetBrains Mono", "Courier New", Courier, monospace;
+
+  --color-bg: var(--color-bg);
+  --color-text: var(--color-text);
+  --color-text-muted: var(--color-text-muted);
+  --color-border: var(--color-border);
+  --color-surface: var(--color-surface);
+  --color-surface-2: var(--color-surface-2);
+  
+  --color-amber: var(--color-amber);
+  --color-teal: var(--color-teal);
+  --color-blue: var(--color-blue);
+  --color-red: var(--color-red);
+}
+
+/* Technical Dashboard Grid-Lines Pattern */
+.grid-lines {
+  background-image: linear-gradient(var(--color-border) 1px, transparent 1px), 
+                    linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.05;
+}
+
+/* Technical Column Header Styled like the design */
+.col-header {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 11px;
+  opacity: 0.75;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 6px;
+}
+
+/* Technical Data Value font rules */
+.data-value {
+  font-family: var(--font-mono);
+  letter-spacing: -0.02em;
+  font-size: 13px;
+}
+
+/* Custom CSS for map markers and UI elements */
+.pulse-amber {
+  box-shadow: 0 0 0 0 rgba(180, 83, 9, 0.5);
+  animation: pulse-amber-anim 2s infinite;
+  border-radius: 50%;
+}
+
+.dark .pulse-amber {
+  box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.5);
+}
+
+@keyframes pulse-amber-anim {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(180, 83, 9, 0.5);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(180, 83, 9, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(180, 83, 9, 0);
+  }
+}
+
+/* Custom scrollbars for high density dashboard elements */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  opacity: 0.3;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
+
+/* Custom styling for Leaflet popups inside technical theme */
+.leaflet-popup-content-wrapper {
+  background: var(--color-surface) !important;
+  color: var(--color-text) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: 0px !important; /* Sharp corners */
+  padding: 4px !important;
+  box-shadow: 4px 4px 0px 0px var(--color-border) !important; /* Retropunk flat shadow */
+}
+
+.leaflet-popup-tip {
+  background: var(--color-surface) !important;
+  border: 1px solid var(--color-border) !important;
+}
+
+.leaflet-popup-close-button {
+  color: var(--color-text-muted) !important;
+  font-size: 14px !important;
+  padding: 6px !important;
+}
