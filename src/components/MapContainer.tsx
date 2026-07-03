@@ -113,7 +113,7 @@ export default function MapContainer({
 
       // Create custom DivIcon html with SVG Map Pin and Shop Name tag
       const iconHtml = `
-        <div class="flex items-center gap-1.5 whitespace-nowrap pointer-events-none hover:scale-105 transition-transform duration-150" style="width: 160px; height: 40px;">
+        <div class="flex items-center gap-1.5 whitespace-nowrap hover:scale-105 transition-transform duration-150" style="width: 160px; height: 40px;">
           <!-- Pin Icon Box -->
           <div class="relative w-8 h-10 shrink-0">
             <!-- Pulsing Ring for high priority prospects -->
@@ -124,8 +124,8 @@ export default function MapContainer({
               <text x="12" y="14" fill="var(--color-text)" font-family="var(--font-mono), monospace" font-size="8" font-weight="900" text-anchor="middle">${score}</text>
             </svg>
           </div>
-          <!-- Floating Shop Name Card -->
-          <div class="bg-surface/90 text-text border border-border px-1.5 py-0.5 text-[9px] font-mono font-bold tracking-tight shadow-sm select-none truncate max-w-[110px] rounded-none uppercase">
+          <!-- Floating Shop Name Card - Hidden by default, animated on hover -->
+          <div class="marker-name-card bg-surface/95 text-text border border-border px-1.5 py-0.5 text-[9px] font-mono font-bold tracking-tight shadow-sm select-none truncate max-w-[110px] rounded-none uppercase transition-all duration-200 opacity-0 -translate-x-1 pointer-events-none">
             ${business.name}
           </div>
         </div>

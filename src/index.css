@@ -209,3 +209,14 @@ span.border:not(td):not(th),
 .leaflet-popup-tip {
   border-radius: 6px !important;
 }
+
+/* Show floating shop name card on marker hover with a sleek slide-in micro-animation */
+.custom-leaflet-marker:hover .marker-name-card {
+  opacity: 1 !important;
+  transform: translateX(0px) !important;
+  pointer-events: auto !important;
+}
+
+.custom-leaflet-marker:hover {
+  z-index: 99999 !important;
+}
