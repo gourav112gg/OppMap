@@ -138,7 +138,7 @@ app.post("/api/realtime/enrich", async (req, res) => {
     `;
 
     const response = await ai.models.generateContent({
-      model: "gemini-3.5-flash",
+      model: "gemini-2.5-flash",
       contents: prompt,
       config: {
         tools: [{ googleSearch: {} }],
@@ -243,7 +243,7 @@ app.post("/api/realtime/discover", async (req, res) => {
     `;
 
     const response = await ai.models.generateContent({
-      model: "gemini-3.5-flash",
+      model: "gemini-2.5-flash",
       contents: prompt,
       config: {
         tools: [{ googleSearch: {} }],
@@ -352,6 +352,15 @@ app.post("/api/realtime/discover", async (req, res) => {
       discovered: formattedList
     });
   }
+});
+
+// Global Error Handler Middleware to prevent HTML error responses
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  console.error("[Unhandled Error]:", err);
+  res.status(err.status || 500).json({
+    success: false,
+    error: err.message || "An unexpected server error occurred."
+  });
 });
 
 // Vite Middleware & Static Fallback Setup

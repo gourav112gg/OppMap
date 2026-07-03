@@ -40,8 +40,19 @@ export default function MapContainer({
     // Add standard Zoom Controls to the bottom right
     L.control.zoom({ position: "bottomright" }).addTo(map);
 
+    // Handle window resizing to keep map canvas smooth and prevent grey tiles
+    const handleResize = () => {
+      map.invalidateSize();
+    };
+    window.addEventListener("resize", handleResize);
+
+    // Invalidate size immediately after loading to ensure complete layout render
+    const timer = setTimeout(handleResize, 100);
+
     // Clean up on unmount
     return () => {
+      window.removeEventListener("resize", handleResize);
+      clearTimeout(timer);
       map.remove();
       leafletMapInstance.current = null;
     };

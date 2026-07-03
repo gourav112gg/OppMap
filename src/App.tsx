@@ -312,6 +312,14 @@ export default function App() {
 
       {/* Main Workspace Frame */}
       <main className="flex-1 flex flex-col md:flex-row relative overflow-hidden" id="main-workspace">
+        {/* Mobile Sidebar Drawer Backdrop */}
+        {isMobileSidebarOpen && (
+          <div
+            className="fixed inset-0 z-20 bg-slate-950/40 backdrop-blur-xs md:hidden"
+            onClick={() => setIsMobileSidebarOpen(false)}
+            id="sidebar-backdrop"
+          />
+        )}
         
         {/* Left Control Sidebar (Desktop & collapsible Mobile Drawer) */}
         <aside
@@ -349,7 +357,7 @@ export default function App() {
               setWeights={setWeights}
             />
 
-            {/* Real-time Web Intelligence Discovery Section - Disabled/Hidden for isolation
+            {/* Real-time Web Intelligence Discovery Section */}
             <div className="p-5 border-b border-border bg-blue/5 flex flex-col gap-3" id="live-discovery-section">
               <div className="flex items-center justify-between">
                 <h4 className="font-mono text-xs font-bold uppercase tracking-wider text-blue flex items-center gap-1.5">
@@ -400,7 +408,6 @@ export default function App() {
                 </button>
               )}
             </div>
-            */}
 
             {/* Scrollable list of matching places */}
             <BusinessList
