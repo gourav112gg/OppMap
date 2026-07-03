@@ -140,9 +140,9 @@
   padding: 6px !important;
 }
 
-/* Premium Dark Mode Map Styling - Tactical Glowing Midnight Navy look */
+/* Premium Dark Mode Map Styling - Tactical Glowing Midnight Navy look with high-visibility roads */
 .dark .leaflet-tile {
-  filter: brightness(0.9) contrast(1.25) saturate(1.4) hue-rotate(205deg) !important;
+  filter: brightness(1.35) contrast(0.95) saturate(1.3) hue-rotate(205deg) !important;
 }
 
 .dark .leaflet-container {
