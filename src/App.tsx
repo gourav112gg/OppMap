@@ -13,7 +13,7 @@ import { Menu, X, Globe, AlertTriangle } from "lucide-react";
 
 export default function App() {
   // --- 1. Global State Management ---
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const [theme, setTheme] = useState<"dark" | "light">("light");
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("All");
   const [areaFilter, setAreaFilter] = useState("All");
