@@ -358,7 +358,7 @@ export default function App() {
               setWeights={setWeights}
             />
 
-            {/* Real-time Web Intelligence Discovery Section */}
+            {/* Real-time Web Intelligence Discovery Section - Disabled/Hidden for isolation
             <div className="p-5 border-b border-border bg-blue/5 flex flex-col gap-3" id="live-discovery-section">
               <div className="flex items-center justify-between">
                 <h4 className="font-mono text-xs font-bold uppercase tracking-wider text-blue flex items-center gap-1.5">
@@ -409,6 +409,7 @@ export default function App() {
                 </button>
               )}
             </div>
+            */}
 
             {/* Scrollable list of matching places */}
             <BusinessList

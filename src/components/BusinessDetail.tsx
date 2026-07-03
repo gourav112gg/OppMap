@@ -116,7 +116,7 @@ export default function BusinessDetail({
           </div>
         </div>
 
-        {/* Real-time Web Search Grounding trigger */}
+        {/* Real-time Web Search Grounding trigger - Disabled/Hidden for isolation
         <div className="p-4 bg-blue/5 border border-blue/20 flex flex-col gap-2.5 rounded-none" id="realtime-web-intel-sync-box">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1.5 text-blue font-bold font-mono text-[10px] uppercase tracking-wider">
@@ -169,6 +169,7 @@ export default function BusinessDetail({
             </div>
           )}
         </div>
+        */}
 
         {/* Dynamic Market Satiation & Data Completeness Telemetry */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3" id="telemetry-intel-board">
