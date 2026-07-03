@@ -92,10 +92,10 @@ export default function MapContainer({
       // Determine color and pulsing states based on opportunity tier
       let markerColorClass = "bg-red border-red-300";
       let isPulsing = false;
-      let emoji = "☕";
+      let categoryCode = "CF";
 
-      if (business.category === "Restaurant") emoji = "🍔";
-      if (business.category === "Dhaba") emoji = "🍛";
+      if (business.category === "Restaurant") categoryCode = "RT";
+      if (business.category === "Dhaba") categoryCode = "DH";
 
       if (tier === "HAS_WEBSITE") {
         markerColorClass = "bg-blue border-blue-300 text-white";
@@ -113,7 +113,7 @@ export default function MapContainer({
         <div class="relative w-8 h-8 flex items-center justify-center rounded-none border-2 border-border shadow-none ${markerColorClass} transition-all duration-200 hover:scale-115" style="transform: translateY(-2px);">
           <!-- Pulsing Ring for high priority prospects -->
           ${isPulsing ? '<div class="absolute inset-0 rounded-none pulse-amber" style="z-index: -1;"></div>' : ""}
-          <span class="text-xs select-none">${emoji}</span>
+          <span class="text-[9px] font-mono font-black select-none">${categoryCode}</span>
           <!-- Tiny score badge -->
           <span class="absolute -bottom-1 -right-1 bg-text text-bg text-[8px] font-mono font-bold px-1 rounded-none border border-border">${score}</span>
         </div>

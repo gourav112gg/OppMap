@@ -215,7 +215,7 @@ export function scoreBusiness(
     // Boost the primary website recommendation priority
     const webRec = recommendations.find(r => r.gap === "No Web Presence" || r.gap === "Unverified Web Presence");
     if (webRec) {
-      webRec.gap = `🚨 Saturated Market Core Gap: ${webRec.gap}`;
+      webRec.gap = `Saturated Market Core Gap: ${webRec.gap}`;
       webRec.action = `CRITICAL: There are ${competitorCount} direct local competitors in ${business.area} area. Launching a high-speed mobile website is mandatory to stop losing customers to them.`;
       webRec.points += 10;
     }

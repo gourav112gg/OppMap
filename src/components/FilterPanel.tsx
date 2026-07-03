@@ -41,10 +41,10 @@ export default function FilterPanel({
 
   const opportunityTiers = [
     { value: "All", label: "All Tiers", color: "border-border hover:border-text" },
-    { value: "HIGH", label: "🔥 High", color: "border-amber/40 text-amber bg-amber/5 hover:bg-amber/10 hover:border-amber" },
-    { value: "MEDIUM", label: "⚡ Medium", color: "border-teal/40 text-teal bg-teal/5 hover:bg-teal/10 hover:border-teal" },
-    { value: "LOW", label: "💤 Low", color: "border-red/40 text-red bg-red/5 hover:bg-red/10 hover:border-red" },
-    { value: "HAS_WEBSITE", label: "🌐 Has Web", color: "border-blue/40 text-blue bg-blue/5 hover:bg-blue/10 hover:border-blue" },
+    { value: "HIGH", label: "High", color: "border-amber/40 text-amber bg-amber/5 hover:bg-amber/10 hover:border-amber" },
+    { value: "MEDIUM", label: "Medium", color: "border-teal/40 text-teal bg-teal/5 hover:bg-teal/10 hover:border-teal" },
+    { value: "LOW", label: "Low", color: "border-red/40 text-red bg-red/5 hover:bg-red/10 hover:border-red" },
+    { value: "HAS_WEBSITE", label: "Has Web", color: "border-blue/40 text-blue bg-blue/5 hover:bg-blue/10 hover:border-blue" },
   ];
 
   const presets = [

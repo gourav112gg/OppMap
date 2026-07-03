@@ -101,14 +101,14 @@ export function runConsoleDiagnostics(businesses: SeededBusiness[]): void {
   const report = auditProspectDataset(businesses);
 
   console.groupCollapsed(
-    `🔍 F&B PROSPECT DATASET DIAGNOSTIC REPORT: ${report.anomaliesDetected} / ${report.totalChecked} records with issues`
+    `[DIAGNOSTICS] F&B PROSPECT DATASET REPORT: ${report.anomaliesDetected} / ${report.totalChecked} records with issues`
   );
 
   console.log(`%cTotal Prospects Checked: ${report.totalChecked}`, "font-weight: bold; color: #3b82f6;");
   console.log(`%cAnomalies Detected: ${report.anomaliesDetected}`, `font-weight: bold; color: ${report.anomaliesDetected > 0 ? '#f59e0b' : '#10b981'};`);
 
   if (report.errors.length > 0) {
-    console.group(`❌ Critical Configuration Errors (${report.errors.length})`);
+    console.group(`[ERROR] Critical Configuration Errors (${report.errors.length})`);
     report.errors.forEach((err) => console.error(err));
     console.groupEnd();
   } else {
@@ -116,7 +116,7 @@ export function runConsoleDiagnostics(businesses: SeededBusiness[]): void {
   }
 
   if (report.warnings.length > 0) {
-    console.group(`⚠ Optimization Warnings (${report.warnings.length})`);
+    console.group(`[WARN] Optimization Warnings (${report.warnings.length})`);
     report.warnings.forEach((warn) => console.warn(warn));
     console.groupEnd();
   } else {
