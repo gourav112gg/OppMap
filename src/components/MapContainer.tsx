@@ -100,42 +100,43 @@ export default function MapContainer({
     businesses.forEach((business) => {
       const { score, tier } = scoreBusiness(business);
       
-      // Determine color and pulsing states based on opportunity tier
-      let markerColorClass = "bg-red border-red-300";
-      let isPulsing = false;
-      let categoryCode = "CF";
-
-      if (business.category === "Restaurant") categoryCode = "RT";
-      if (business.category === "Dhaba") categoryCode = "DH";
-
-      if (tier === "HAS_WEBSITE") {
-        markerColorClass = "bg-blue border-blue-300 text-white";
-      } else if (tier === "HIGH") {
-        markerColorClass = "bg-amber border-amber-300 text-slate-950";
-        isPulsing = true; // Pulsing ring for high opportunity targets
-      } else if (tier === "MEDIUM") {
-        markerColorClass = "bg-teal border-teal-300 text-slate-950";
-      } else {
-        markerColorClass = "bg-red border-red-300 text-white";
+      // Determine colors based on business category
+      let pinColor = "var(--color-amber)";
+      if (business.category === "Restaurant") {
+        pinColor = "var(--color-teal)";
+      } else if (business.category === "Dhaba") {
+        pinColor = "var(--color-red)";
       }
 
-      // Create beautiful custom DivIcon with tailwind classes and optional pulse
+      // Pulse ring for high priority targets
+      const isPulsing = tier === "HIGH";
+
+      // Create custom DivIcon html with SVG Map Pin and Shop Name tag
       const iconHtml = `
-        <div class="relative w-8 h-8 flex items-center justify-center rounded-none border-2 border-border shadow-none ${markerColorClass} transition-all duration-200 hover:scale-115" style="transform: translateY(-2px);">
-          <!-- Pulsing Ring for high priority prospects -->
-          ${isPulsing ? '<div class="absolute inset-0 rounded-none pulse-amber" style="z-index: -1;"></div>' : ""}
-          <span class="text-[9px] font-mono font-black select-none">${categoryCode}</span>
-          <!-- Tiny score badge -->
-          <span class="absolute -bottom-1 -right-1 bg-text text-bg text-[8px] font-mono font-bold px-1 rounded-none border border-border">${score}</span>
+        <div class="flex items-center gap-1.5 whitespace-nowrap pointer-events-none hover:scale-105 transition-transform duration-150" style="width: 160px; height: 40px;">
+          <!-- Pin Icon Box -->
+          <div class="relative w-8 h-10 shrink-0">
+            <!-- Pulsing Ring for high priority prospects -->
+            ${isPulsing ? '<div class="absolute top-1 left-1 w-6 h-6 rounded-full pulse-amber" style="z-index: -1;"></div>' : ""}
+            <svg class="w-8 h-10" viewBox="0 0 24 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 0C5.37 0 0 5.37 0 12c0 9 12 18 12 18s12-9 12-18c0-6.63-5.37-12-12-12z" fill="${pinColor}" stroke="var(--color-border)" stroke-width="2"/>
+              <circle cx="12" cy="11" r="7" fill="var(--color-surface)" />
+              <text x="12" y="14" fill="var(--color-text)" font-family="var(--font-mono), monospace" font-size="8" font-weight="900" text-anchor="middle">${score}</text>
+            </svg>
+          </div>
+          <!-- Floating Shop Name Card -->
+          <div class="bg-surface/90 text-text border border-border px-1.5 py-0.5 text-[9px] font-mono font-bold tracking-tight shadow-sm select-none truncate max-w-[110px] rounded-none uppercase">
+            ${business.name}
+          </div>
         </div>
       `;
 
       const customIcon = L.divIcon({
         html: iconHtml,
         className: "custom-leaflet-marker", // reset default styles
-        iconSize: [32, 32],
-        iconAnchor: [16, 16],
-        popupAnchor: [0, -16],
+        iconSize: [160, 40],
+        iconAnchor: [16, 30],
+        popupAnchor: [0, -30],
       });
 
       // Plot marker
@@ -204,30 +205,27 @@ export default function MapContainer({
         className="absolute bottom-6 left-6 z-[1000] p-4 rounded-none border border-border bg-surface/95 text-text text-xs space-y-2.5 shadow-none hidden sm:block pointer-events-auto"
         id="map-legend"
       >
-        <h5 className="col-header uppercase tracking-wider text-[10px] text-text-muted border-none pb-0">Opportunity Legend</h5>
+        <h5 className="col-header uppercase tracking-wider text-[10px] text-text-muted border-none pb-0">Category Legend</h5>
         
         <div className="space-y-1.5 font-mono text-[10px] uppercase tracking-wider" id="legend-list">
-          <div className="flex items-center gap-2" id="legend-high">
-            <span className="w-3.5 h-3.5 rounded-none bg-amber border border-border flex items-center justify-center text-[8px] text-slate-950 font-bold relative shrink-0">
-              <span className="absolute inset-0 rounded-none pulse-amber" style={{ zIndex: -1 }}></span>
-              H
-            </span>
-            <span>High Opp (No Web)</span>
+          <div className="flex items-center gap-2">
+            <span className="w-3 h-3 bg-amber border border-border flex items-center justify-center shrink-0"></span>
+            <span>Cafe</span>
           </div>
 
-          <div className="flex items-center gap-2" id="legend-medium">
-            <span className="w-3.5 h-3.5 rounded-none bg-teal border border-border flex items-center justify-center text-[8px] text-slate-950 font-bold shrink-0">M</span>
-            <span>Med Opp (No Web)</span>
+          <div className="flex items-center gap-2">
+            <span className="w-3 h-3 bg-teal border border-border flex items-center justify-center shrink-0"></span>
+            <span>Restaurant</span>
           </div>
 
-          <div className="flex items-center gap-2" id="legend-low">
-            <span className="w-3.5 h-3.5 rounded-none bg-red border border-border flex items-center justify-center text-[8px] text-white font-bold shrink-0">L</span>
-            <span>Low Opp (No Web)</span>
+          <div className="flex items-center gap-2">
+            <span className="w-3 h-3 bg-red border border-border flex items-center justify-center shrink-0"></span>
+            <span>Dhaba</span>
           </div>
 
-          <div className="flex items-center gap-2" id="legend-website">
-            <span className="w-3.5 h-3.5 rounded-none bg-blue border border-border flex items-center justify-center text-[8px] text-white font-bold shrink-0">W</span>
-            <span>Active Website</span>
+          <div className="pt-1.5 border-t border-border/40 text-[9px] text-text-muted flex items-center gap-2">
+            <span className="w-3 h-3 rounded-full border border-border bg-transparent pulse-amber shrink-0"></span>
+            <span>Pulsing (High Opp)</span>
           </div>
         </div>
       </div>
