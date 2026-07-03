@@ -9,6 +9,7 @@ interface NavbarProps {
   businesses: SeededBusiness[];
   theme: "dark" | "light";
   toggleTheme: () => void;
+  onSelectBusiness: (business: SeededBusiness) => void;
 }
 
 export default function Navbar({
@@ -17,7 +18,10 @@ export default function Navbar({
   businesses,
   theme,
   toggleTheme,
+  onSelectBusiness,
 }: NavbarProps) {
+  const [isOpen, setIsOpen] = React.useState(false);
+
   // Compute real-time stats
   const totalCount = businesses.length;
   
@@ -31,6 +35,27 @@ export default function Navbar({
       return b.websiteStatus !== "YES" && score >= 70;
     }).length;
   }, [businesses]);
+
+  // Extract top 5 opportunities to show as suggestions when search is empty
+  const topOpportunities = React.useMemo(() => {
+    return [...businesses]
+      .map((b) => ({ business: b, score: scoreBusiness(b).score }))
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 5)
+      .map((x) => x.business);
+  }, [businesses]);
+
+  // Autocomplete search suggestions matching query
+  const filteredSuggestions = React.useMemo(() => {
+    if (!searchQuery.trim()) return [];
+    const query = searchQuery.toLowerCase().trim();
+    return businesses.filter(
+      (b) =>
+        b.name.toLowerCase().includes(query) ||
+        b.area.toLowerCase().includes(query) ||
+        b.category.toLowerCase().includes(query)
+    ).slice(0, 8);
+  }, [businesses, searchQuery]);
 
   return (
     <header className="sticky top-0 z-[1001] flex flex-col md:flex-row items-center justify-between px-6 py-4 border-b border-border bg-surface text-text font-sans transition-colors duration-200" id="app-header">
@@ -70,10 +95,78 @@ export default function Navbar({
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
+          onFocus={() => setIsOpen(true)}
+          onBlur={() => setTimeout(() => setIsOpen(false), 200)}
           placeholder="SEARCH MARKET PROSPECTS..."
           className="w-full pl-10 pr-4 py-2 text-xs border border-border rounded-none bg-surface-2 text-text placeholder-text-muted focus:outline-none focus:border-amber transition-all font-mono uppercase tracking-wider"
           id="global-search-input"
         />
+
+        {/* Search Suggestions Dropdown */}
+        {isOpen && (
+          <div className="absolute top-full left-0 right-0 mt-1 bg-surface border border-border z-[1050] max-h-64 overflow-y-auto shadow-none flex flex-col font-mono" id="search-suggestions-dropdown">
+            {!searchQuery.trim() ? (
+              <>
+                <div className="px-3 py-1.5 bg-surface-2 border-b border-border text-[9px] text-text-muted uppercase font-bold tracking-wider">
+                  Top Opportunity Targets
+                </div>
+                {topOpportunities.map((b) => {
+                  const { score } = scoreBusiness(b);
+                  return (
+                    <button
+                      key={b.id}
+                      onMouseDown={(e) => {
+                        e.preventDefault();
+                        setSearchQuery(b.name);
+                        onSelectBusiness(b);
+                        setIsOpen(false);
+                      }}
+                      className="px-3 py-2 text-left text-[11px] text-text hover:bg-text hover:text-bg transition-colors flex items-center justify-between border-b border-border last:border-b-0 cursor-pointer"
+                    >
+                      <span className="truncate max-w-[280px] font-bold">{b.name}</span>
+                      <span className="text-[10px] text-amber font-mono font-bold">Score: {score}</span>
+                    </button>
+                  );
+                })}
+              </>
+            ) : (
+              <>
+                {filteredSuggestions.length > 0 ? (
+                  <>
+                    <div className="px-3 py-1.5 bg-surface-2 border-b border-border text-[9px] text-text-muted uppercase font-bold tracking-wider">
+                      Matching Prospects
+                    </div>
+                    {filteredSuggestions.map((b) => {
+                      const { score } = scoreBusiness(b);
+                      return (
+                        <button
+                          key={b.id}
+                          onMouseDown={(e) => {
+                            e.preventDefault();
+                            setSearchQuery(b.name);
+                            onSelectBusiness(b);
+                            setIsOpen(false);
+                          }}
+                          className="px-3 py-2 text-left text-[11px] text-text hover:bg-text hover:text-bg transition-colors flex items-center justify-between border-b border-border last:border-b-0 cursor-pointer"
+                        >
+                          <div className="flex flex-col truncate">
+                            <span className="truncate max-w-[260px] font-bold">{b.name}</span>
+                            <span className="text-[9px] text-text-muted group-hover:text-bg/60 uppercase">{b.category} · {b.area}</span>
+                          </div>
+                          <span className="text-[10px] text-amber font-mono font-bold">Score: {score}</span>
+                        </button>
+                      );
+                    })}
+                  </>
+                ) : (
+                  <div className="px-3 py-3 text-center text-xs text-text-muted">
+                    NO PROSPECTS FOUND
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Stats and Utilities */}

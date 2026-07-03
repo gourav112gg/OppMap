@@ -308,6 +308,7 @@ export default function App() {
         businesses={businesses}
         theme={theme}
         toggleTheme={toggleTheme}
+        onSelectBusiness={handleSelectBusiness}
       />
 
       {/* Main Workspace Frame */}
