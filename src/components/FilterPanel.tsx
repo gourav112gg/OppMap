@@ -50,10 +50,14 @@ export default function FilterPanel({
   const presets = [
     {
       name: "Default BI",
+      label: "Balanced Audit",
+      description: "Standard balanced model assessing all gaps equally.",
       weights: DEFAULT_WEIGHTS,
     },
     {
       name: "Web-Centric",
+      label: "Web Design Leads",
+      description: "Prioritizes finding clients who lack a website.",
       weights: {
         website: 60,
         reviews: 10,
@@ -66,6 +70,8 @@ export default function FilterPanel({
     },
     {
       name: "Dine-In Sentiment",
+      label: "SEO & Review Leads",
+      description: "Prioritizes businesses with poor ratings or low reviews.",
       weights: {
         website: 10,
         reviews: 35,
@@ -78,6 +84,8 @@ export default function FilterPanel({
     },
     {
       name: "Contact / Hours",
+      label: "Listing Setup Leads",
+      description: "Prioritizes listings missing working hours or phone numbers.",
       weights: {
         website: 20,
         reviews: 10,
@@ -235,8 +243,8 @@ export default function FilterPanel({
         {isCalibratorOpen && (
           <div className="space-y-4 pt-1" id="calibrator-controls-container">
             {/* Presets Row */}
-            <div className="flex flex-col gap-1.5">
-              <span className="text-[9px] font-mono uppercase text-text-muted">Model Accuracy Presets</span>
+            <div className="flex flex-col gap-2">
+              <span className="text-[10px] font-mono uppercase text-text-muted font-bold">What service are you selling? (Presets)</span>
               <div className="grid grid-cols-2 gap-1.5">
                 {presets.map((preset) => {
                   const isCurrent =
@@ -249,25 +257,42 @@ export default function FilterPanel({
                     <button
                       key={preset.name}
                       onClick={() => applyPreset(preset.weights)}
-                      className={`px-2 py-1.5 text-[9px] font-mono uppercase tracking-wider border text-center transition-all cursor-pointer truncate ${
+                      className={`px-2 py-1.5 text-[10px] font-mono uppercase tracking-wider border text-center transition-all cursor-pointer truncate ${
                         isCurrent
                           ? "bg-text text-bg border-border font-bold"
                           : "bg-surface-2 text-text border-border/60 hover:border-text"
                       }`}
                     >
-                      {preset.name}
+                      {preset.label}
                     </button>
                   );
                 })}
+              </div>
+              {/* Active Preset Description */}
+              <div className="text-[10px] text-text-muted italic bg-surface-2/40 p-2.5 border border-border/40 mt-0.5">
+                {(() => {
+                  const currentPreset = presets.find(
+                    (p) =>
+                      weights.website === p.weights.website &&
+                      weights.reviews === p.weights.reviews &&
+                      weights.rating === p.weights.rating &&
+                      weights.phone === p.weights.phone &&
+                      weights.hours === p.weights.hours
+                  );
+                  return currentPreset
+                    ? `Goal: ${currentPreset.description}`
+                    : "Goal: Custom priorities selected below.";
+                })()}
               </div>
             </div>
 
             {/* Sliders Container */}
             <div className="space-y-2.5 bg-surface-2/30 p-3 border border-border">
+              <span className="text-[9px] font-mono uppercase text-text-muted font-bold block -mb-1">Customize Gaps Importance</span>
               {/* Slider 1: Website Status Gap */}
               <div className="flex flex-col gap-1">
-                <div className="flex justify-between items-center text-[9px] font-mono text-text-muted">
-                  <span>WEBSITE MISSING GAP</span>
+                <div className="flex justify-between items-center text-[10px] font-mono text-text-muted">
+                  <span>Importance: Missing Website</span>
                   <span className="font-bold text-text">{weights.website} pts</span>
                 </div>
                 <input
@@ -282,8 +307,8 @@ export default function FilterPanel({
 
               {/* Slider 2: Review Volume Gap */}
               <div className="flex flex-col gap-1">
-                <div className="flex justify-between items-center text-[9px] font-mono text-text-muted">
-                  <span>REVIEWS DEFICIT GAP</span>
+                <div className="flex justify-between items-center text-[10px] font-mono text-text-muted">
+                  <span>Importance: Few Reviews</span>
                   <span className="font-bold text-text">{weights.reviews} pts</span>
                 </div>
                 <input
@@ -298,8 +323,8 @@ export default function FilterPanel({
 
               {/* Slider 3: Average Rating Gap */}
               <div className="flex flex-col gap-1">
-                <div className="flex justify-between items-center text-[9px] font-mono text-text-muted">
-                  <span>RATING DEFICIT GAP</span>
+                <div className="flex justify-between items-center text-[10px] font-mono text-text-muted">
+                  <span>Importance: Poor Ratings</span>
                   <span className="font-bold text-text">{weights.rating} pts</span>
                 </div>
                 <input
@@ -314,8 +339,8 @@ export default function FilterPanel({
 
               {/* Slider 4: Phone Contact Gap */}
               <div className="flex flex-col gap-1">
-                <div className="flex justify-between items-center text-[9px] font-mono text-text-muted">
-                  <span>MISSING PHONE GAP</span>
+                <div className="flex justify-between items-center text-[10px] font-mono text-text-muted">
+                  <span>Importance: No Phone Number</span>
                   <span className="font-bold text-text">{weights.phone} pts</span>
                 </div>
                 <input
@@ -330,8 +355,8 @@ export default function FilterPanel({
 
               {/* Slider 5: Timings Gap */}
               <div className="flex flex-col gap-1">
-                <div className="flex justify-between items-center text-[9px] font-mono text-text-muted">
-                  <span>MISSING HOURS GAP</span>
+                <div className="flex justify-between items-center text-[10px] font-mono text-text-muted">
+                  <span>Importance: No Operating Hours</span>
                   <span className="font-bold text-text">{weights.hours} pts</span>
                 </div>
                 <input
@@ -366,9 +391,9 @@ export default function FilterPanel({
                   <Square className="w-4 h-4 text-text-muted shrink-0" />
                 )}
                 <div>
-                  <span className="block font-bold">CATEGORY-SMART COEFFICIENTS</span>
+                  <span className="block font-bold">SMART TYPE ADJUSTMENTS</span>
                   <span className="text-[9px] text-text-muted font-normal block mt-0.5 leading-snug">
-                    Vary gap weights dynamically based on Cafe vs. Dhaba vs. Restaurant consumer behaviors.
+                    Automatically adjusts priorities based on business type (e.g. Cafes need websites more, Dhabas need phone numbers more).
                   </span>
                 </div>
               </button>
@@ -384,9 +409,9 @@ export default function FilterPanel({
                   <Square className="w-4 h-4 text-text-muted shrink-0" />
                 )}
                 <div>
-                  <span className="block font-bold">COMPETITOR DENSITY FORCE</span>
+                  <span className="block font-bold">COMPETITION INTENSITY BOOST</span>
                   <span className="text-[9px] text-text-muted font-normal block mt-0.5 leading-snug">
-                    Augment lead priority & score urgency when there is high competition saturation locally.
+                    Gives extra opportunity points to businesses that face high local competition.
                   </span>
                 </div>
               </button>
